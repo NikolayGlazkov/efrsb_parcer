@@ -38,24 +38,26 @@ lot_price = str(find_all_td_align[-3].text.split(",")[0]).replace(" ", "")  # ц
 price_proc = find_all_td_align[-1].text.split(",")[0]  # процент от цены ля задатка
 deposit = int(lot_price) / 100 * int(price_proc)
 
-aray = [
-    efrsb_num,
-    efrsb_publice,
-    obligator,
-    adres_of_oblig,
-    arbitor_man,
-    snils_arbit_man,
-    inn_arbit_man,
-    obligator_inn,
-    elect_plase,
-    proces,
-    opn_clos,
-    lot_namber,
-    lot_name,
-    lot_price,
-    price_proc,
-    deposit
-]
+
+
+# aray = [
+#     efrsb_num,
+#     efrsb_publice,
+#     obligator,
+#     adres_of_oblig,
+#     arbitor_man,
+#     snils_arbit_man,
+#     inn_arbit_man,
+#     obligator_inn,
+#     elect_plase,
+#     proces,
+#     opn_clos,
+#     lot_namber,
+#     lot_name,
+#     lot_price,
+#     price_proc,
+#     deposit
+# ]
 
 
 variables = {
@@ -99,6 +101,9 @@ variables = {
     "${DEPOSIT}": deposit,  # Размер задатка
     "${OFEER_PRICE}": "__________________",  # цена предложения
 }
+
+for key,value in variables.items():
+    print(value)
 # if __name__ == '__main__':
 #     main()
 
