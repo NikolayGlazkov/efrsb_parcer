@@ -11,12 +11,12 @@ from docx.shared import Pt
 from docxtpl import DocxTemplate
 
 
-def made_docx_file(data_from_pars:dict): # словарь мз парсера заходит сюда и взовисимости от типа торгов пишет файл
-    
-        doc = DocxTemplate("Zayavka_auction.docx")
-        doc.render(data_from_pars)
-        doc.save("Заявка лот№.docx")
-    
+def made_docx_file(data_from_pars:dict,proces:str,lot_namber): # словарь мз парсера заходит сюда и взовисимости от типа торгов пишет файл
+        if proces == "Открытый аукцион":
+            doc = DocxTemplate("Zayavka_auction.docx")
+            doc.render(data_from_pars)
+            doc.save(f'заявка аукцион лот№{lot_namber}.docx')
+            doc = DocxTemplate("Zayavka_auction.docx")
 
 def gender_find(last_name: str): # определение пола по отчеству
     if last_name[-2:] == "ич" or last_name[-2:] == "лы":
@@ -164,7 +164,7 @@ variables = {
 }
 
 
+# print(proces)
 
-
-made_docx_file(variables)
+made_docx_file(variables,proces,lot_namber)
 
