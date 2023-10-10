@@ -10,18 +10,15 @@ from docx import Document
 from docx.shared import Pt
 from docxtpl import DocxTemplate
 
-# "ИЧ" = М
-# "НА" = Ж
-def made_docx_file(context:dict, type_of_proc:str): # взять из словоря
-    if type_of_proc == "Открытый аукцион":
-        # for i in range(2):
+
+def made_docx_file(data_from_pars:dict): # словарь мз парсера заходит сюда и взовисимости от типа торгов пишет файл
+    
         doc = DocxTemplate("Zayavka_auction.docx")
-        doc.render(context)
+        doc.render(data_from_pars)
         doc.save("Заявка лот№.docx")
-# "ЛЫ" = М
-# "ЗЫ" = Ж
-# "ВА" = Ж
-def gender_find(last_name: str):
+    
+
+def gender_find(last_name: str): # определение пола по отчеству
     if last_name[-2:] == "ич" or last_name[-2:] == "лы":
         return "male"
     elif last_name[-2:] == "на" or last_name[-2:] == "зы" or last_name[-2:] == "ва":
@@ -44,6 +41,7 @@ find_all_td_align = soup.find_all("td", align="right")
 oll_info4 = soup.find_all("tr", class_="even")
 
 
+
 # print(*oll_info[6].text.split()) # @mail орбитражного
 efrsb_num = oll_info[0].text.split()[-1]  # номер публикации в ефрсб
 efrsb_publice = oll_info1[0].text.split()[-1]  # дата публикации в ефрсб
@@ -61,21 +59,26 @@ elect_plase = oll_info[-1].text[16:]  # площадка проведения
 proces = oll_info[-4].text[10:]  # тип процедуры
 opn_clos = oll_info1[-2].text.split()[-1]  # метод проведения торгов откр. закр.
 lot_namber = oll_info1[-1].text[0]  # номер лота
-lot_name = str(oll_info1[-1].text[1:]).title()  #  имя лота
+lot_name = oll_info1[-1].text  #  имя лота
 lot_price = str(find_all_td_align[-3].text.split(",")[0]).replace(" ", "")  # цена лота
 price_proc = find_all_td_align[-1].text.split(",")[0]  # процент от цены ля задатка
 deposit = int(lot_price) / 100 * int(price_proc)
 sro_name = " ".join(oll_info4[-5].text.split())  # имя сро
+acsion_date = oll_info4[-2].text[19:-10] # дата проведения 
 
-type_of_bidding = ""  # дата проведения
-acsion_date = ""  # Склоенние формы проедения перменная
+
 if proces == "Открытый аукцион":
-    acsion_date = oll_info4[-2].text[19:-10]  # дата проведения
     type_of_bidding = "открытого аукциона"  # Склоенние формы проедения перменная
 elif proces == "Публичное предложение":
-    acsion_date = oll_info4[-2].text[19:-10]
     type_of_bidding = "публичного предложения"
 
+
+if opn_clos == "Открытая":
+    opn_clos_skl = "открытой" 
+    opn_clos_an = "открытых"
+elif opn_clos == "Закрытая":
+    opn_clos_skl = "закрытой"
+    opn_clos_an = "закрытых"
 
 #     Родительный
 #     GENITIVE = 0
@@ -112,7 +115,8 @@ obligator_rad = f"{obligator_lastname_rad} {obligator_name_rad} {obligator_middl
 
 variables = {
     "DATE": todayis,  # дата создания договора
-    "CLIENT_NAME": "Тазылисламов Руслан Робертович",  # имя клиента
+    "CL_NAME": "Тазылисламов Руслан Робертович",  # имя клиента
+    "CL_NAM_skr" :"Тазылисламов Р. Р.",
     "PASPORT_SERIA":'345345',  # СЕРИЯ ПАСПОРТА клиента
     "PASPORT_NUMBER" : "605164",  # НОМЕР ПАСПОРТА клиента
     "PASPORT_HOME": "Отделением УФМС России по республике Башкортостан в гор. Таймазы",  # орган выдавший паспорт ПАСПОРТА клиента
@@ -131,32 +135,36 @@ variables = {
     "BANK_KS_NUMBER": "30101810150040000763",  # К/С НОМЕР участника
     "CLIENT_MAIL": "pl128@bk.ru",  # Электронная почта клиента Учасника
     "CLIENT_PHONE": "+79609952665",  # номер телефона Учасника
-    "EFRSB_NUMBER": efrsb_num,  # Номер публикации в ЕФРСБ
-    "EFRSB_PUBLIC_DATE": efrsb_publice,  # Дата публикации в ЕФРСБ
+    
+    "EFRS_NUM": efrsb_num,  # Номер публикации в ЕФРСБ
+    "EFRSB_PUB_DAT": efrsb_publice,  # Дата публикации в ЕФРСБ
     "OBLIGOR_NAME": obligator,  # фио должника
     "OBL_MAN_IN_RAD": obligator_rad, # фио должника в радительном
     "PLASE_OBLIGOR": adres_of_oblig,  # Место нахождения должника
     "INN_OBLIGOR": obligator_inn,  # ИНН должника
     "SNIL_OGRN_OBLIGOR": f"{obligator_snils}",  # Снилс или ОГРН долника ввод включая слово "Снилс" или "ОГРН"
-    "ARBITRATION_MANAGER": arbitor_man,  # ФИО Арбитражного управляющео
+    "opn_clos_an":opn_clos_an,
+    "arb_man_name": arbitor_man,  # ФИО Арбитражного управляющео
     "AR_MAN_IN_DAT": recipient,  # ФИО арбитр в склоеннии
-    "INN_CNILS_arbitration_manager": f"(ИНН: {inn_arbit_man} СНИЛС: {snils_arbit_man}",  # инн снилс арбитражного упровляющего
+    "INN_CNI_arbit_manager": f"(ИНН: {inn_arbit_man} СНИЛС: {snils_arbit_man}",  # инн снилс арбитражного упровляющего
     "Sro_Arbitration": sro_name,  # наименование СРО АУ
     "PROCES": proces,  # Тип проведения торгов
     "TYPE_OF_BID": type_of_bidding,  # склонение типа проведения торгов
     "OPCLOSE": opn_clos,  # Форма подачи ценовых предложений
     "ELECTONIC_PLASE": elect_plase,  # Этп проведения
-    "THE_PROC_CODE": "182279",  # Код процедуры
-    "LOT_NAME": f"{lot_namber} - {lot_name}",  # Наименование и номер лота
+    "THE_P_COD": "182279",  # Код процедуры
+    "lot_namber":lot_namber,
+    "LOT_NAME": lot_name,  # Наименование и номер лота
     "DATA_AUCKCIONA": acsion_date,  # дата провдения
     "LOT_PRICE": lot_price,  # цена лота
     "PERCENT_LOT_PRICE": price_proc,  # процент от цены лота
     "DEPOSIT": deposit,  # Размер задатка
+    "opn_clos_skl":opn_clos_skl,
     "OFEER_PRICE": "__________________",  # цена предложения
 }
 
 
 
-context = { 'emitent' : 'ООО Ромашка', 'address1' : 'г. Москва, ул. Долгоруковская, д. 0', 'участник': 'ООО Участник', 'адрес_участника': 'г. Москва, ул. Полевая, д. 0', 'director': 'И.И. Иванов'}
-type_of_proc = "Открытый аукцион"
-made_docx_file(variables, type_of_proc)
+
+made_docx_file(variables)
+
