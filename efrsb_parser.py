@@ -78,11 +78,6 @@ def make_content_dict(url):
 
 
 
-url = "https://old.bankrot.fedresurs.ru/MessageWindow.aspx?ID=5CAF3F3B0FAB4776A36F5BF6A9C12926"
-# url = "https://old.bankrot.fedresurs.ru/MessageWindow.aspx?ID=723F95257A3A4A1DAC1035AEF2017775"
-
-print(data_lot_tabel(url))
-print(make_content_dict(url))
     
 
 

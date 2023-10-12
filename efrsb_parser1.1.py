@@ -16,7 +16,6 @@ def gender_find(last_name: str): # определение пола по отче
 
 def make_dict_from_pars(url:str):
     p = Petrovich()
-
     driver = webdriver.Chrome("")
     driver.get(url)
     html_code = driver.page_source  # содержимое страницы
