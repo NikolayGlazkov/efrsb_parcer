@@ -2,19 +2,20 @@ import efrsb_parser
 import datetime
 from petrovich.main import Petrovich
 
+"""мы делаем результотирующий список из двух списков импортируемых из файла efrsb_parser"""
 
 
-def sklonenie_name(name: str, declination: str):  # определение пола по отчеству
+def sklonenie_name(name: str, declination: str):  # определение пола по отчеству, нужно указывать падеж
     p = Petrovich()
 
     if name.split(" ")[-1][-2:] == "ич" or name.split(" ")[-1][-2:] == "лы":
-        gender_arbit = "male"
+        gender = "male"
     elif (
         name.split(" ")[-1][-2:] == "на"
         or name.split(" ")[-1][-2:] == "зы"
         or name.split(" ")[0][-2:] == "ва"
     ):
-        gender_arbit = "female"
+        gender= "female"
     di_decl = {
         "GENITIVE": 0,
         "DATIVE": 1,
@@ -23,9 +24,9 @@ def sklonenie_name(name: str, declination: str):  # определение по�
         "PREPOSITIONAL": 4,
     }
     decl = di_decl[declination]
-    lastname_s = p.lastname(name.split(" ")[0], decl, gender_arbit)
-    name_s = p.firstname(name.split(" ")[1], decl, gender_arbit)
-    middlename_s = p.middlename(name.split(" ")[2], decl, gender_arbit)
+    lastname_s = p.lastname(name.split(" ")[0], decl, gender)
+    name_s = p.firstname(name.split(" ")[1], decl, gender)
+    middlename_s = p.middlename(name.split(" ")[2], decl, gender)
 
     recipient = (
         f"{lastname_s} {name_s} {middlename_s}"  # имя в дательном падеже для шапки заяв
@@ -104,19 +105,19 @@ elif len(dict_two["ИНН"]) == 10:
 else:
     name_of_obligator = None  # Вы можете установить значение по умолчанию или обработать другим способом
 
-if dict_two['Вид торгов'] == "Открытый аукцион":
+if dict_two["Вид торгов"] == "Открытый аукцион":
     type_of_bidding = "открытого аукциона"  # Склоенние формы проедения перменная
-elif dict_two['Вид торгов'] == "Публичное предложение":
+elif dict_two["Вид торгов"] == "Публичное предложение":
     type_of_bidding = "публичного предложения"
 
 
-if dict_two['Форма подачи предложения о цене'] == "Открытая":
-    opn_clos_skl = "открытой" 
+if dict_two["Форма подачи предложения о цене"] == "Открытая":
+    opn_clos_skl = "открытой"
     opn_clos_an = "открытых"
-elif dict_two['Форма подачи предложения о цене'] == "Закрытая":
+elif dict_two["Форма подачи предложения о цене"] == "Закрытая":
     opn_clos_skl = "закрытой"
     opn_clos_an = "закрытых"
-name_arbitr = " ".join(dict_two['Арбитражный управляющий'].split(" ")[:3])
+name_arbitr = " ".join(dict_two["Арбитражный управляющий"].split(" ")[:3])
 
 print(name_arbitr)
 variables = {
@@ -131,7 +132,7 @@ variables = {
     "opn_clos_an": opn_clos_an,
     "opn_clos_skl": opn_clos_skl,
     "arb_man_name": name_arbitr,  # ФИО Арбитражного управляющео
-    "AR_MAN_IN_DAT": sklonenie_name(name_arbitr,"DATIVE"),  # ФИО арбитр в склоеннии
+    "AR_MAN_IN_DAT": sklonenie_name(name_arbitr, "DATIVE"),  # ФИО арбитр в склоеннии
     "INN_CNI_arbit_manager": f"",  # инн снилс арбитражного упровляющего
     # "Sro_Arbitration": sro_name,  # наименование СРО АУ
     # "PROCES": proces,  # Тип проведения торгов
@@ -147,5 +148,5 @@ variables = {
     # "DEPOSIT": deposit,  # Размер задатка
     # "OFEER_PRICE": "__________________",  # цена предложения
 }
-for key,value in variables.items():
-    print(key,value)
+for key, value in variables.items():
+    print(key, value)
