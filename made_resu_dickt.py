@@ -96,15 +96,29 @@ dict_two = {
 if len(dict_two["ИНН"]) == 12:
     name_of_obligator = dict_two["ФИО должника"]
     obligator_rad = sklonenie_name(dict_two["ФИО должника"], "GENITIVE")
+    ob_snils_ogrn = f"СНИЛС {dict_two['СНИЛС']}"
 elif len(dict_two["ИНН"]) == 10:
     name_of_obligator = dict_two["Наименование должника"]
     obligator_rad = dict_two["Наименование должника"]
-    obligator_snils = f"ОГРН {dict_two['ОГРН']}"
+    ob_snils_ogrn = f"ОГРН {dict_two['ОГРН']}"
 else:
     name_of_obligator = None  # Вы можете установить значение по умолчанию или обработать другим способом
 
+if dict_two['Вид торгов'] == "Открытый аукцион":
+    type_of_bidding = "открытого аукциона"  # Склоенние формы проедения перменная
+elif dict_two['Вид торгов'] == "Публичное предложение":
+    type_of_bidding = "публичного предложения"
 
-# if
+
+if dict_two['Форма подачи предложения о цене'] == "Открытая":
+    opn_clos_skl = "открытой" 
+    opn_clos_an = "открытых"
+elif dict_two['Форма подачи предложения о цене'] == "Закрытая":
+    opn_clos_skl = "закрытой"
+    opn_clos_an = "закрытых"
+name_arbitr = " ".join(dict_two['Арбитражный управляющий'].split(" ")[:3])
+
+print(name_arbitr)
 variables = {
     "DATE": datetime.date.today().strftime("%d.%m.%Y"),  # дата создания договора
     "EFRS_NUM": dict_two["№ сообщения"],  # Номер публикации в ЕФРСБ
@@ -113,11 +127,12 @@ variables = {
     "OBL_MAN_IN_RAD": obligator_rad,  # фио должника в радительном
     "PLASE_OBLIGOR": dict_two["Адрес"],  # Место нахождения должника
     "INN_OBLIGOR": dict_two["ИНН"],  # ИНН должника
-    "SNIL_OGRN_OBLIGOR": obligator_snils,  # Снилс или ОГРН долника ввод включая слово "Снилс" или "ОГРН"
-    # "opn_clos_an": opn_clos_an,
-    # "arb_man_name": arbitor_man,  # ФИО Арбитражного управляющео
-    # "AR_MAN_IN_DAT": recipient,  # ФИО арбитр в склоеннии
-    # "INN_CNI_arbit_manager": f"ИНН: {inn_arbit_man} СНИЛС: {snils_arbit_man}",  # инн снилс арбитражного упровляющего
+    "SNIL_OGRN_OBLIGOR": ob_snils_ogrn,  # Снилс или ОГРН долника ввод включая слово "Снилс" или "ОГРН"
+    "opn_clos_an": opn_clos_an,
+    "opn_clos_skl": opn_clos_skl,
+    "arb_man_name": name_arbitr,  # ФИО Арбитражного управляющео
+    "AR_MAN_IN_DAT": sklonenie_name(name_arbitr,"DATIVE"),  # ФИО арбитр в склоеннии
+    "INN_CNI_arbit_manager": f"",  # инн снилс арбитражного упровляющего
     # "Sro_Arbitration": sro_name,  # наименование СРО АУ
     # "PROCES": proces,  # Тип проведения торгов
     # "TYPE_OF_BID": type_of_bidding,  # склонение типа проведения торгов
@@ -130,7 +145,6 @@ variables = {
     # "LOT_PRICE": lot_price,  # цена лота
     # "PERCENT_LOT_PRICE": price_proc,  # процент от цены лота
     # "DEPOSIT": deposit,  # Размер задатка
-    # "opn_clos_skl": opn_clos_skl,
     # "OFEER_PRICE": "__________________",  # цена предложения
 }
 for key,value in variables.items():
