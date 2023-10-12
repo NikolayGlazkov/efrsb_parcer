@@ -1,7 +1,7 @@
 import efrsb_parser
 import datetime
 from petrovich.main import Petrovich
-from petrovich.enums import Case, Gender
+
 
 
 def sklonenie_name(name: str, declination: str):  # определение пола по отчеству
@@ -99,6 +99,7 @@ if len(dict_two["ИНН"]) == 12:
 elif len(dict_two["ИНН"]) == 10:
     name_of_obligator = dict_two["Наименование должника"]
     obligator_rad = dict_two["Наименование должника"]
+    obligator_snils = f"ОГРН {dict_two['ОГРН']}"
 else:
     name_of_obligator = None  # Вы можете установить значение по умолчанию или обработать другим способом
 
@@ -112,7 +113,7 @@ variables = {
     "OBL_MAN_IN_RAD": obligator_rad,  # фио должника в радительном
     "PLASE_OBLIGOR": dict_two["Адрес"],  # Место нахождения должника
     "INN_OBLIGOR": dict_two["ИНН"],  # ИНН должника
-    # "SNIL_OGRN_OBLIGOR": obligator_snils,  # Снилс или ОГРН долника ввод включая слово "Снилс" или "ОГРН"
+    "SNIL_OGRN_OBLIGOR": obligator_snils,  # Снилс или ОГРН долника ввод включая слово "Снилс" или "ОГРН"
     # "opn_clos_an": opn_clos_an,
     # "arb_man_name": arbitor_man,  # ФИО Арбитражного управляющео
     # "AR_MAN_IN_DAT": recipient,  # ФИО арбитр в склоеннии
