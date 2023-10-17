@@ -11,3 +11,11 @@
 #     doc.render(data_from_pars)
 #     doc.save(f'заявка публичка лот№{lot_namber}.docx')
 
+ans=True
+while ans:
+    print (""""
+    1.Add a Student
+    2.Delete a Student
+    3.Look Up Student Record
+    4.Exit/Quit
+    """")

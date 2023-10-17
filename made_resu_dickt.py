@@ -50,15 +50,7 @@ def sklonenie_name(
     return recipient
 
 
-
-"""легковой фиат"""
-# url = "https://old.bankrot.fedresurs.ru/MessageWindow.aspx?ID=5CAF3F3B0FAB4776A36F5BF6A9C12926"
-"""ООО должник"""
-# url = "https://old.bankrot.fedresurs.ru/MessageWindow.aspx?ID=723F95257A3A4A1DAC1035AEF2017775"
-""""""
-url = "https://old.bankrot.fedresurs.ru/MessageWindow.aspx?ID=4D7C894B4B3D4092B71A2314A909DD27"
-
-def make_result_dikt(lot_num:str):
+def make_result_dikt(lot_num:str,url:str):
     dikt_table = efrsb_parser.data_lot_tabel(url)
     dict_two = efrsb_parser.make_content_dict(url)
 
@@ -129,4 +121,10 @@ def make_result_dikt(lot_num:str):
     }
     return clieInf | lot_info
 
-print(make_result_dikt())
+"""легковой фиат"""
+# url = "https://old.bankrot.fedresurs.ru/MessageWindow.aspx?ID=5CAF3F3B0FAB4776A36F5BF6A9C12926"
+"""ООО должник"""
+# url = "https://old.bankrot.fedresurs.ru/MessageWindow.aspx?ID=723F95257A3A4A1DAC1035AEF2017775"
+""""""
+url = "https://old.bankrot.fedresurs.ru/MessageWindow.aspx?ID=4D7C894B4B3D4092B71A2314A909DD27"
+print(make_result_dikt("1" ,url=url))
