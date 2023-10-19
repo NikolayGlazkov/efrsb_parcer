@@ -9,7 +9,7 @@ def data_lot_tabel(url):
     driver.implicitly_wait(10)
     table = driver.find_element(By.CLASS_NAME, "lotInfo")  # таблица с инфо о лоте
     rows = table.find_elements(By.TAG_NAME, "tr")
-    data_dict = {}
+    
     array_temp = []
     for row in rows:
         array = []
@@ -52,6 +52,7 @@ def make_content_dict(url):
         "Дата публикации",
         "ФИО должника",
         "Наименование должника",
+        "Место жительства",
         "Адрес",
         "ОГРН",
         "ИНН",

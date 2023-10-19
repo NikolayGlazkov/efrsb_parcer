@@ -10,9 +10,11 @@ def made_docx_file(data_from_pars:dict,lot_namber,filename:str): # словар�
 
 
 
-url = "https://old.bankrot.fedresurs.ru/MessageWindow.aspx?ID=723F95257A3A4A1DAC1035AEF2017775"
+"""ООО должник"""
+url = "https://old.bankrot.fedresurs.ru/MessageWindow.aspx?ID=DC425B49E55449E685C90FCF652D65BF"
 
 lot_namber = "1"
+
 data_from_pars = made_resu_dickt.make_result_dikt(lot_namber,url=url) 
 
 made_docx_file(data_from_pars,lot_namber,"Agent_dogovor.docx")

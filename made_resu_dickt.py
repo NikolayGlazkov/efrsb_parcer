@@ -3,13 +3,15 @@ import About_client_info
 import datetime
 from petrovich.main import Petrovich
 
+
+
 """мы делаем результотирующий список из двух списков импортируемых из файла efrsb_parser"""
 
 
 def sklonenie_name(
     name: str, declination: str
 ):  # определение пола по отчеству, нужно указывать падеж
-    
+
     #   переменная = sklonenie_name(ФИО должника, "Склонение")
     #     Родительный
     #     GENITIVE = 0
@@ -57,12 +59,14 @@ def make_result_dikt(lot_num:str,url:str):
     clieInf = About_client_info.ClientInfo()
     if len(dict_two["ИНН"]) == 12:
         name_of_obligator = dict_two["ФИО должника"]
-        obligator_rad = sklonenie_name(dict_two["ФИО должника"], "GENITIVE")
+        obligator_rad = "asdad"#sklonenie_name(dict_two["ФИО должника"], "GENITIVE")
         ob_snils_ogrn = f"СНИЛС {dict_two['СНИЛС']}"
+        adres = dict_two["Место жительства"]
     elif len(dict_two["ИНН"]) == 10:
         name_of_obligator = dict_two["Наименование должника"]
         obligator_rad = dict_two["Наименование должника"]
         ob_snils_ogrn = f"ОГРН {dict_two['ОГРН']}"
+        adres = dict_two["Адрес"]
     else:
         name_of_obligator = None  # Вы можете установить значение по умолчанию или обработать другим способом
 
@@ -95,13 +99,13 @@ def make_result_dikt(lot_num:str,url:str):
         "EFRSB_PUB_DAT": dict_two["Дата публикации"],  # Дата публикации в ЕФРСБ
         "OBLIGOR_NAME": name_of_obligator,  # фио должника
         "OBL_MAN_IN_RAD": obligator_rad,  # фио должника в радительном
-        "PLASE_OBLIGOR": dict_two["Адрес"],  # Место нахождения должника
+        "PLASE_OBLIGOR": adres,  # Место нахождения должника
         "INN_OBLIGOR": dict_two["ИНН"],  # ИНН должника
         "SNIL_OGRN_OBLIGOR": ob_snils_ogrn,  # Снилс или ОГРН долника ввод включая слово "Снилс" или "ОГРН"
         "opn_clos_an": opn_clos_an,
         "opn_clos_skl": opn_clos_skl,
         "arb_man_name": name_arbitr,  # ФИО Арбитражного управляющео
-        "AR_MAN_IN_DAT": sklonenie_name(name_arbitr, "DATIVE"),  # ФИО арбитр в склоеннии
+        "AR_MAN_IN_DAT": "sdffs",#sklonenie_name(name_arbitr, "DATIVE"),  # ФИО арбитр в склоеннии
         "INN_CNI_arbit_manager": INN_CNI_arbit_manager,  # инн снилс арбитражного упровляющего
         "Sro_Arbitration": dict_two["СРО АУ"],  # наименование СРО АУ
         "PROCES": dict_two["Вид торгов"],  # Тип проведения торгов
@@ -110,7 +114,6 @@ def make_result_dikt(lot_num:str,url:str):
             "Форма подачи предложения о цене"
         ],  # Форма подачи ценовых предложений
         "ELECTONIC_PLASE": dict_two["Место проведения"],  # Этп проведения
-        "THE_P_COD": "182279",  # Код процедуры с площадки
         "lot_namber": lot_nomber,
         "LOT_NAME": dikt_table[lot_nomber]["Описание"],  # Наименование и номер лота
         "DATA_AUCKCIONA": acsion_date,  # дата провдения
@@ -121,8 +124,4 @@ def make_result_dikt(lot_num:str,url:str):
     }
     return clieInf | lot_info
 
-"""легковой фиат"""
-# url = "https://old.bankrot.fedresurs.ru/MessageWindow.aspx?ID=5CAF3F3B0FAB4776A36F5BF6A9C12926"
-"""ООО должник"""
-# url = "https://old.bankrot.fedresurs.ru/MessageWindow.aspx?ID=723F95257A3A4A1DAC1035AEF2017775"
-""""""
+
