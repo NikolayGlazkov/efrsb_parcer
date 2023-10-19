@@ -6,8 +6,12 @@ import made_resu_dickt
 def made_docx_file(data_from_pars:dict,lot_namber,filename:str): # словарь мз парсера заходит сюда и взовисимости от типа торгов пишет файл
         doc = DocxTemplate(filename)
         doc.render(data_from_pars)
-        doc.save(f'{filename} лот№{lot_namber}.docx')
-
+        if filename == "Zayavka_auction.docx":
+            doc.save(f'Заявка для аукциона лот№{lot_namber}.docx')
+        elif filename == "Zayavka_pablic.docx":
+             doc.save(f'Заявка для публички лот№{lot_namber}.docx')
+        elif filename == "Agent_dogovor.docx":
+            doc.save(f'Агентский договр лот№{lot_namber}.docx')
 
 
 """ООО должник"""
