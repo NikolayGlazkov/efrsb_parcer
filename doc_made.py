@@ -15,7 +15,7 @@ url = "https://old.bankrot.fedresurs.ru/MessageWindow.aspx?ID=DC425B49E55449E685
 
 lot_namber = "1"
 
-data_from_pars = made_resu_dickt.make_result_dikt(lot_namber,url=url) 
+data_from_pars = made_resu_dickt.make_result_dikt(url=url,lot_num=lot_namber) 
 
 made_docx_file(data_from_pars,lot_namber,"Agent_dogovor.docx")
 if data_from_pars["PROCES"] == "Открытый аукцион":

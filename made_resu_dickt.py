@@ -2,6 +2,7 @@ import efrsb_parser
 import About_client_info
 import datetime
 from petrovich.main import Petrovich
+import re
 
 
 
@@ -52,14 +53,14 @@ def sklonenie_name(
     return recipient
 
 
-def make_result_dikt(lot_num:str,url:str):
+def make_result_dikt(url:str,lot_num = "1"):
     dikt_table = efrsb_parser.data_lot_tabel(url)
     dict_two = efrsb_parser.make_content_dict(url)
 
     clieInf = About_client_info.ClientInfo()
     if len(dict_two["ИНН"]) == 12:
         name_of_obligator = dict_two["ФИО должника"]
-        obligator_rad = "asdad"#sklonenie_name(dict_two["ФИО должника"], "GENITIVE")
+        obligator_rad = sklonenie_name(dict_two["ФИО должника"], "GENITIVE")
         ob_snils_ogrn = f"СНИЛС {dict_two['СНИЛС']}"
         adres = dict_two["Место жительства"]
     elif len(dict_two["ИНН"]) == 10:
@@ -82,12 +83,11 @@ def make_result_dikt(lot_num:str,url:str):
     elif dict_two["Форма подачи предложения о цене"] == "Закрытая":
         opn_clos_skl = "закрытой"
         opn_clos_an = "закрытых"
-    name_arbitr = " ".join(dict_two["Арбитражный управляющий"].split(" ")[:3])
+    name_arbitr = " ".join(re.split(r'\s+',dict_two["Арбитражный управляющий"])[:3])
     INN_CNI_arbit_manager = " ".join(dict_two["Арбитражный управляющий"].split()[3:])
 
     acsion_date = dict_two["Дата и время торгов"].split()[0]
 
-    lot_nomber = "1"
 
     lot_price = int(dikt_table[lot_num]["Начальная цена, руб"].split(",")[0].replace(" ", ""))
 
@@ -105,7 +105,7 @@ def make_result_dikt(lot_num:str,url:str):
         "opn_clos_an": opn_clos_an,
         "opn_clos_skl": opn_clos_skl,
         "arb_man_name": name_arbitr,  # ФИО Арбитражного управляющео
-        "AR_MAN_IN_DAT": "sdffs",#sklonenie_name(name_arbitr, "DATIVE"),  # ФИО арбитр в склоеннии
+        "AR_MAN_IN_DAT": sklonenie_name(name_arbitr, "DATIVE"),  # ФИО арбитр в склоеннии
         "INN_CNI_arbit_manager": INN_CNI_arbit_manager,  # инн снилс арбитражного упровляющего
         "Sro_Arbitration": dict_two["СРО АУ"],  # наименование СРО АУ
         "PROCES": dict_two["Вид торгов"],  # Тип проведения торгов
@@ -114,14 +114,14 @@ def make_result_dikt(lot_num:str,url:str):
             "Форма подачи предложения о цене"
         ],  # Форма подачи ценовых предложений
         "ELECTONIC_PLASE": dict_two["Место проведения"],  # Этп проведения
-        "lot_namber": lot_nomber,
-        "LOT_NAME": dikt_table[lot_nomber]["Описание"],  # Наименование и номер лота
+        "lot_namber": lot_num,
+        "LOT_NAME": dikt_table[lot_num]["Описание"],  # Наименование и номер лота
         "DATA_AUCKCIONA": acsion_date,  # дата провдения
         "LOT_PRICE": lot_price,  # цена лота
         "PERCENT_LOT_PRICE": percent_price,  # процент от цены лота
         "DEPOSIT": zadatok,  # Размер задатка
         "OFEER_PRICE": "__________________",  # цена предложения
+
     }
+    
     return clieInf | lot_info
-
-
