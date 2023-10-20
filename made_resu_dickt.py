@@ -84,7 +84,7 @@ def make_result_dikt(url:str,lot_num = "1"):
         opn_clos_skl = "закрытой"
         opn_clos_an = "закрытых"
     name_arbitr = " ".join(re.split(r'\s+',dict_two["Арбитражный управляющий"])[:3])
-    INN_CNI_arbit_manager = " ".join(dict_two["Арбитражный управляющий"].split()[3:])
+    INN_CNI_arbit_manager = " ".join(re.split(r'\s+',dict_two["Арбитражный управляющий"])[3:])
 
     acsion_date = dict_two["Дата и время торгов"].split()[0]
 
