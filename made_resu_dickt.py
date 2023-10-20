@@ -119,8 +119,8 @@ def make_result_dikt(url:str,lot_num = "1"):
         "DATA_AUCKCIONA": acsion_date,  # дата провдения
         "LOT_PRICE": lot_price,  # цена лота
         "PERCENT_LOT_PRICE": percent_price,  # процент от цены лота
-        "DEPOSIT": zadatok,  # Размер задатка
-        "OFEER_PRICE": "__________________",  # цена предложения
+        "DEPOSIT": zadatok  # Размер задатка
+        
 
     }
     
