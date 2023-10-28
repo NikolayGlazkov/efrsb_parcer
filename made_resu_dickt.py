@@ -75,6 +75,8 @@ def make_result_dikt(url:str,lot_num = "1"):
         type_of_bidding = "открытого аукциона"  # Склоенние формы проедения перменная
     elif dict_two["Вид торгов"] == "Публичное предложение":
         type_of_bidding = "публичного предложения"
+    elif dict_two["Вид торгов"] == "Закрытый аукцион":
+        type_of_bidding = "закрытого аукциона"
 
 
     if dict_two["Форма подачи предложения о цене"] == "Открытая":
@@ -123,5 +125,6 @@ def make_result_dikt(url:str,lot_num = "1"):
         
 
     }
-    
+    print(dict_two["Вид торгов"])
     return clieInf | lot_info
+
